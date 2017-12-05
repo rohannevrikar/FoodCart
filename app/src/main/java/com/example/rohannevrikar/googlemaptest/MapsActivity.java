@@ -13,12 +13,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,24 +33,66 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
-    private static final String TAG="myApp";
+    private static final String TAG="message";
     private GoogleMap mMap;
     LocationManager locationManager;
     private Button btnDone;
+    private EditText searchInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        searchInput = (EditText)findViewById(R.id.searchInput);
 //        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        getCurrentLocation();;
+
+    }
+
+    private void init(){
+        searchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if((actionId == EditorInfo.IME_ACTION_SEARCH)
+                        || (actionId == EditorInfo.IME_ACTION_DONE)
+                        || (keyEvent.getAction() == KeyEvent.ACTION_DOWN)
+                        || (keyEvent.getAction() == KeyEvent.KEYCODE_ENTER)){
+                    geoInputLocation();
+
+                }
+                return false;
+            }
+        });
+    }
+    private void geoInputLocation(){
+        String inputSearch = searchInput.getText().toString();
+        Geocoder geocoder = new Geocoder(MapsActivity.this);
+        List<Address> list = new ArrayList<>();
+        try{
+            list = geocoder.getFromLocationName(inputSearch, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if(list.size()>0){
+            Address address = list.get(0);
+            Log.d(TAG,address.toString());
+            LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latLng).title(address.getAddressLine(0)));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
+
+        }
+    }
+
+    private void getCurrentLocation(){
         btnDone = (Button)findViewById(R.id.btnDone);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,9 +125,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Geocoder geocoder = new Geocoder(getApplicationContext());
                     try {
                         List<Address> addressList = geocoder.getFromLocation(latitute,longitude,1);
-                        String str = addressList.get(0).getLocality() + ", ";
-                        str += addressList.get(0).getCountryName();
-                        mMap.addMarker(new MarkerOptions().position(latLng).title(str));
+                        mMap.addMarker(new MarkerOptions().position(latLng).title(addressList.get(0).getAddressLine(0)));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15.0f));
 
                     } catch (IOException e) {
@@ -142,11 +187,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             });
         }
+
     }
-
-
-
-
 
 
     /**
@@ -160,9 +202,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        init();
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
