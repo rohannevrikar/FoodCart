@@ -54,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
             throw new SQLException("error while opening databse");
         }
 
-        Toast.makeText(this,"Data imported",Toast.LENGTH_SHORT).show();
         login = (Button) findViewById(R.id.btn_login);
         login.setOnClickListener(new OnClickListener() {
             @Override
