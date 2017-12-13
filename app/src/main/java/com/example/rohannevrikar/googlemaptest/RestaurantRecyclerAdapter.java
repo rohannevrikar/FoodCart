@@ -1,12 +1,14 @@
 package com.example.rohannevrikar.googlemaptest;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,11 +17,11 @@ import java.util.List;
 
 public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRecyclerAdapter.ViewHolder> {
     private final Context mContext;
-    private final List<RestaurantInfo> listRestaurants;
+    private final ArrayList<RestaurantInfo> listRestaurants;
     private final LayoutInflater layoutInflater;
     private DatabaseHelper dbHelper;
 
-    public RestaurantRecyclerAdapter(Context mContext, List listRestaurants) {
+    public RestaurantRecyclerAdapter(Context mContext, ArrayList<RestaurantInfo> listRestaurants) {
         this.mContext = mContext;
         layoutInflater = LayoutInflater.from(mContext);
         this.listRestaurants = listRestaurants;
@@ -29,7 +31,7 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = layoutInflater.inflate(R.layout.activity_restaurant_item, parent, false);
 
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, mContext, listRestaurants);
     }
 
     @Override
@@ -47,19 +49,36 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
         return listRestaurants.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final TextView restaurantName;
         public final TextView cuisine;
         public final TextView deliveryTime;
         public final TextView priceForTwo;
+        public final Context mContext;
+        public final ArrayList<RestaurantInfo> listRestaurants;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(View itemView, Context mContext, ArrayList<RestaurantInfo> listRestaurants) {
             super(itemView);
+            this.mContext = mContext;
+            this.listRestaurants = listRestaurants;
+            itemView.setOnClickListener(this);
+
             restaurantName = (TextView)itemView.findViewById(R.id.txtRestaurantName);
             cuisine = (TextView)itemView.findViewById(R.id.txtCuisine);
             deliveryTime = (TextView)itemView.findViewById(R.id.txtDeliveryTime);
             priceForTwo = (TextView)itemView.findViewById(R.id.txtPrice);
+        }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            RestaurantInfo restaurant = this.listRestaurants.get(position);
+            Intent intent = new Intent(mContext, DishesList.class);
+            intent.putExtra("restaurantName", restaurant.getRestaurantName());
+            mContext.startActivity(intent);
+
+
         }
     }
 }

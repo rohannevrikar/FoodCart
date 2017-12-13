@@ -24,26 +24,17 @@
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
             app:srcCompat="@drawable/ic_search" />
-        <ImageView
-            android:id="@+id/goArrow"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            app:srcCompat="@drawable/ic_go" />
-        <EditText
-            android:layout_width="wrap_content"
+
+        <AutoCompleteTextView
+            android:id="@+id/searchInput"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:textSize="15sp"
-            android:textColor="#000"
             android:layout_toEndOf="@+id/searchImage"
-            android:id="@+id/searchInput"
+            android:hint="Enter landmark or area"
             android:imeOptions="actionSearch"
-            android:hint="Enter landmark or area"/>
+            android:textColor="#000"
+            android:textSize="15sp" />
     </RelativeLayout>
 
     <fragment
@@ -66,6 +57,15 @@
         android:text="DONE"
         android:textAlignment="center"
         android:textColor="#ffffff" />
+
+    <ImageView
+        android:id="@+id/currentLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/relativeLayout"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_marginTop="27dp"
+        app:srcCompat="@mipmap/ic_location" />
 
 </RelativeLayout>
 

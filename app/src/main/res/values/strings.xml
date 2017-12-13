@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TastifaiSample</string>
+    <string name="app_name">Tastifai</string>
     <string name="title_activity_maps">Current Location</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_signup">Sign up</string>

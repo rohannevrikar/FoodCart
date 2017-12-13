@@ -31,7 +31,10 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyBqWsfwiFD-_CmgN0ex9Tuhhunwi4mPyq4" />
+        <!--<meta-data-->
+            <!--android:name="com.google.android.gms.version"-->
+            <!--android:value="@integer/google_play_services_version"/>-->
 
         <activity
             android:name=".MapsActivity"
@@ -50,12 +53,9 @@
         </activity>
         <activity
             android:name=".SignUpActivity"
-            android:label="@string/title_activity_signup">
-
-        </activity>
-        <activity android:name=".RestaurantsList">
-
-        </activity>
+            android:label="@string/title_activity_signup"></activity>
+        <activity android:name=".RestaurantsList"></activity>
+        <activity android:name=".DishesList"></activity>
     </application>
 
 </manifest>

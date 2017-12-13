@@ -35,7 +35,7 @@ public class RestaurantsList extends AppCompatActivity {
         RecyclerView restaurantsRecyclerView = (RecyclerView)findViewById(R.id.restaurantsList);
         LinearLayoutManager restaurantsLayoutManager = new LinearLayoutManager(this);
         restaurantsRecyclerView.setLayoutManager(restaurantsLayoutManager);
-        List<RestaurantInfo> listRestaurants = new ArrayList<>();
+        ArrayList<RestaurantInfo> listRestaurants = new ArrayList<>();
         cursor = dbHelper.getRestaurants();
         if(cursor.moveToFirst()){
             do{
