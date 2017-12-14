@@ -3,6 +3,7 @@ package com.example.rohannevrikar.googlemaptest;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
     private final ArrayList<RestaurantInfo> listRestaurants;
     private final LayoutInflater layoutInflater;
     private DatabaseHelper dbHelper;
+    private static final String TAG = "message";
 
     public RestaurantRecyclerAdapter(Context mContext, ArrayList<RestaurantInfo> listRestaurants) {
         this.mContext = mContext;
@@ -74,8 +76,10 @@ public class RestaurantRecyclerAdapter extends RecyclerView.Adapter<RestaurantRe
         public void onClick(View view) {
             int position = getAdapterPosition();
             RestaurantInfo restaurant = this.listRestaurants.get(position);
+            Log.d(TAG, "onClick: " + restaurant.getId());
             Intent intent = new Intent(mContext, DishesList.class);
-            intent.putExtra("restaurantName", restaurant.getRestaurantName());
+            intent.putExtra("restaurantId", restaurant.getId());
+            intent.putExtra("restaurantName",restaurant.getRestaurantName());
             mContext.startActivity(intent);
 
 

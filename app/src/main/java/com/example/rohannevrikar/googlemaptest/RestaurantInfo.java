@@ -5,12 +5,22 @@ package com.example.rohannevrikar.googlemaptest;
  */
 
 public class RestaurantInfo {
+
+
+
+    private int id;
     private String restaurantName;
     private String cuisine;
     private String deliveryTime;
     private String priceForTwo;
 
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getRestaurantName() {
         return restaurantName;
     }

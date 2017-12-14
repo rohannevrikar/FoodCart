@@ -40,6 +40,7 @@ public class RestaurantsList extends AppCompatActivity {
         if(cursor.moveToFirst()){
             do{
                 RestaurantInfo info = new RestaurantInfo();
+                info.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 info.setRestaurantName(cursor.getString(cursor.getColumnIndex("name")));
                 info.setCuisine(cursor.getString(cursor.getColumnIndex("cuisine")));
                 info.setDeliveryTime(cursor.getString(cursor.getColumnIndex("deliverytime")));

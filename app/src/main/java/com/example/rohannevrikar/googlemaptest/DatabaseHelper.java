@@ -26,10 +26,11 @@ import java.io.OutputStream;
 class DatabaseHelper extends SQLiteOpenHelper {
 
 
-    public static final String DATABASE_NAME = "tastifaisample";
+    public static final String DATABASE_NAME = "tastifaidb";
     String DB_PATH = null;
     public static final String USERS_TABLE = "users";
     public static final String RESTAURANTS_TABLE = "restaurants";
+    public static final String DISHES_TABLE = "dishes";
 
     public static final String COL1 = "id";
     public static final String COL2 = "email";
@@ -161,5 +162,13 @@ private boolean checkDataBase() throws IOException {
         restaurantsData.moveToFirst();
         Log.d(TAG,restaurantsData.getString(0) + " " + restaurantsData.getString(1));
         return restaurantsData;
+    }
+    public Cursor getDishes(int restaurantId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + DISHES_TABLE + " WHERE restaurant_id = '" + restaurantId + "'";
+        Cursor dishesData = db.rawQuery(query, null);
+        dishesData.moveToFirst();
+        Log.d(TAG,dishesData.getString(0) + " " + dishesData.getString(1));
+        return dishesData;
     }
 }

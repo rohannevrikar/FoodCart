@@ -21,14 +21,13 @@
             app:srcCompat="@drawable/ic_back" />
 
         <TextView
-            android:id="@+id/txtHeading"
+            android:id="@+id/txtRestaurantName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/back"
-            android:textSize="20sp"
-            android:text="Restaurants Near You"
-            android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
@@ -36,8 +35,24 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dishesList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+        android:layout_centerVertical="true"
+        android:layout_marginTop="65dp"
+        tools:listitem="@layout/activity_dish_item" />
+    <Button
+        android:id="@+id/btnDone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:background="#359c5e"
+        android:padding="8dp"
+        android:text="PLACE ORDER"
+        android:textAlignment="center"
+        android:textColor="#ffffff" />
 
 </RelativeLayout>

@@ -25,7 +25,7 @@
             android:layout_centerVertical="true"
             app:srcCompat="@drawable/ic_search" />
 
-        <AutoCompleteTextView
+        <EditText
             android:id="@+id/searchInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

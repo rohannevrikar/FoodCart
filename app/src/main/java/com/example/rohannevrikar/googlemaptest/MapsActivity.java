@@ -57,7 +57,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     LocationManager locationManager;
     private Button btnDone;
     private ImageView currentLocation;
-    private AutoCompleteTextView searchInput;
+    private EditText searchInput;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private static Marker marker;
     private PlaceAutocompleteAdapter placeAutocompleteAdapter;
@@ -72,7 +72,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        searchInput = (AutoCompleteTextView) findViewById(R.id.searchInput);
+        searchInput = (EditText) findViewById(R.id.searchInput);
         currentLocation = (ImageView) findViewById(R.id.currentLocation);
         currentLocation.setOnClickListener(new View.OnClickListener() {
             @Override
