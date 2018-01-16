@@ -3,6 +3,8 @@
     <string name="title_activity_maps">Current Location</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_signup">Sign up</string>
+    <string name="facebook_app_id">494465687619682</string>
+    <string name="fb_login_protocol_scheme">fb494465687619682</string>
 
 
 </resources>

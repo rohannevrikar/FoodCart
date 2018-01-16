@@ -149,10 +149,6 @@ private boolean checkDataBase() throws IOException {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT name FROM " + USERS_TABLE + " WHERE email = '" + email + "' AND password = '" + password + "'";
         Cursor userData = db.rawQuery(query, null);
-        Log.d(TAG,email);
-        Log.d(TAG,password);
-        Log.d(TAG,query);
-        Log.d(TAG,String.valueOf(userData.getCount()));
         return userData;
     }
     public Cursor getRestaurants(){
@@ -160,7 +156,6 @@ private boolean checkDataBase() throws IOException {
         String query = "SELECT * FROM " + RESTAURANTS_TABLE;
         Cursor restaurantsData = db.rawQuery(query, null);
         restaurantsData.moveToFirst();
-        Log.d(TAG,restaurantsData.getString(0) + " " + restaurantsData.getString(1));
         return restaurantsData;
     }
     public Cursor getDishes(int restaurantId){
@@ -168,7 +163,6 @@ private boolean checkDataBase() throws IOException {
         String query = "SELECT * FROM " + DISHES_TABLE + " WHERE restaurant_id = '" + restaurantId + "'";
         Cursor dishesData = db.rawQuery(query, null);
         dishesData.moveToFirst();
-        Log.d(TAG,dishesData.getString(0) + " " + dishesData.getString(1));
         return dishesData;
     }
 }

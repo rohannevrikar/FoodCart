@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +19,8 @@ public class DishesList extends AppCompatActivity {
     private Cursor cursor;
     private ImageView back;
     private TextView restaurantName;
+    private Button btnCheckOut;
+    private static final String TAG = "DishesList";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +28,8 @@ public class DishesList extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         restaurantName = (TextView)findViewById(R.id.txtRestaurantName);
         back = (ImageView)findViewById(R.id.back);
+        btnCheckOut = (Button)findViewById(R.id.btnCheckout);
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,6 +57,22 @@ public class DishesList extends AppCompatActivity {
         }
         DishRecyclerAdapter dishRecyclerAdapter = new DishRecyclerAdapter(this,dishesList);
         dishesRecyclerView.setAdapter(dishRecyclerAdapter);
+        final ArrayList<DishInfo> cartItems = dishRecyclerAdapter.getCartItems();
+        Log.d(TAG, "initializeDisplayContent: " + cartItems.toString());
+        btnCheckOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DishesList.this, Cart.class);
+                Bundle args = new Bundle();
+                args.putSerializable("selectedItems",cartItems);
+                intent.putExtra("bundle",args);
+                startActivity(intent);
+
+            }
+        });
+
+        
+
 
     }
 }

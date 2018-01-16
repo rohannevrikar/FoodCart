@@ -1,9 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.rohannevrikar.googlemaptest.Cart">
+    <RelativeLayout
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/white_border"
+        android:elevation="10dp">
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/ic_back" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/txtCart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Your Cart"
+            android:layout_toEndOf="@+id/back"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:textSize="20sp" />
+
+    </RelativeLayout>
+
+
+    <ListView
+        android:id="@+id/listCart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/titleBar"
+        android:layout_marginTop="50dp" />
+
+    <TextView
+        android:id="@+id/txtAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listCart"
+        android:layout_margin="40dp"
+        android:text="Total amount to be paid : "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <TextView
+        android:id="@+id/txtBillAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listCart"
+        android:layout_margin="40dp"
+        android:layout_toRightOf="@+id/txtAmount"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    <Button
+        android:id="@+id/btnDone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:background="#359c5e"
+        android:padding="8dp"
+        android:text="DONE"
+        android:textAlignment="center"
+        android:textColor="#ffffff" />
+
+</RelativeLayout>

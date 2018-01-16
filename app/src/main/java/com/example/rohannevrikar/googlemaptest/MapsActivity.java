@@ -1,7 +1,9 @@
 package com.example.rohannevrikar.googlemaptest;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -64,6 +66,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleApiClient mGoogleApiClient;
     private static final float DEFAULT_ZOOM = 15f;
     private static int count = 0;
+    private SharedPreferences sharedPreferences;
+    private LatLng position;
+    private double latitude;
+    private double longitude;
 
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
             new LatLng(-40,-168), new LatLng(71,136));
@@ -80,6 +86,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 getCurrentLocation();
                 count = 1;
             }
+
+        });
+        btnDone = (Button)findViewById(R.id.btnDone);
+        btnDone.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                sharedPrefManager(latitude, longitude);
+                Intent intent = new Intent(MapsActivity.this, RestaurantsList.class);
+                startActivity(intent);
+
+            }
         });
 //        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -87,10 +105,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
         getCurrentLocation();;
 
     }
+    private void onMarkerDrag(Marker marker){
+        position = marker.getPosition();
+        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker marker) {
+                Toast.makeText(MapsActivity.this, "Starting drag", Toast.LENGTH_SHORT).show();
 
+            }
+
+            @Override
+            public void onMarkerDrag(Marker marker) {
+
+            }
+
+            @Override
+            public void onMarkerDragEnd(Marker marker) {
+                Toast.makeText(MapsActivity.this, "Lat : " + position.latitude + " Long : " + position.longitude, Toast.LENGTH_SHORT).show();
+                latitude = position.latitude;
+                longitude = position.longitude;
+            }
+        });
+    }
     private void init(){
 //        mGoogleApiClient = new GoogleApiClient
 //                .Builder(this)
@@ -100,6 +141,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                .build();
 //        placeAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient, LAT_LNG_BOUNDS, null);
 //        searchInput.setAdapter(placeAutocompleteAdapter);
+
         searchInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
@@ -128,6 +170,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Address address = list.get(0);
             Log.d(TAG,address.toString());
             LatLng latLng = new LatLng(address.getLatitude(),address.getLongitude());
+            latitude = address.getLatitude();
+            longitude = address.getLongitude();
+            sharedPrefManager(latitude, longitude);
             Log.d(TAG, "geoInputLocation: Removing marker ");
             marker.remove();
             Log.d(TAG, "geoInputLocation: Adding marker");
@@ -137,15 +182,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void getCurrentLocation(){
-        btnDone = (Button)findViewById(R.id.btnDone);
-        btnDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MapsActivity.this, RestaurantsList.class);
-                startActivity(intent);
 
-            }
-        });
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -165,7 +202,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         if(count==1)
                             marker.remove();
-                        moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),DEFAULT_ZOOM);
+                        latitude = currentLocation.getLatitude();
+                        longitude = currentLocation.getLongitude();
+                        moveCamera(new LatLng(latitude, longitude), DEFAULT_ZOOM);
+
+
 
                     }else{
                         Log.d(TAG, "onComplete: current location is null");
@@ -173,7 +214,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 }
             });
-        }
+        sharedPrefManager(latitude, longitude);
+           }
 
 
 
@@ -181,7 +223,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void moveCamera(LatLng latLng, float zoom){
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-        marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Current location"));
+        marker = mMap.addMarker(new MarkerOptions().position(latLng).title("Delivering around here"));
+        marker.setDraggable(true);
+        onMarkerDrag(marker);
 
     }
     /**
@@ -197,11 +241,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         init();
         mMap = googleMap;
+        moveCamera(new LatLng(71,136), DEFAULT_ZOOM);
+
 
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+    private void sharedPrefManager(double latitude, double longitude){
+        sharedPreferences = getSharedPreferences("LocationPreference", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong("latitude", Double.doubleToRawLongBits(latitude));
+        editor.putLong("longitude", Double.doubleToRawLongBits(longitude));
+        editor.apply();
     }
 }
